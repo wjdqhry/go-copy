@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/otiai10/copy"
@@ -30,14 +31,19 @@ func main() {
 		}
 	}
 
+	wg := sync.WaitGroup{}
+	wg.Add(len(cpFolders))
+
 	for origin, target := range cpFolders {
 		go func(o, t string) {
 			err := copy.Copy(o, t)
 			if err != nil {
 				log.Println(err)
 			}
+			wg.Done()
 		}(origin, target)
 	}
+	wg.Wait()
 	log.Println("complete!!!!!!!")
 	log.Println(time.Now().Sub(startTime))
 }
