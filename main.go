@@ -28,6 +28,8 @@ func main() {
 		if _, err := os.Stat(origin); err != nil {
 			// path/to/whatever exists
 			log.Fatal("non exist path")
+		} else {
+			log.Println(origin, "exist!!")
 		}
 	}
 
@@ -36,17 +38,18 @@ func main() {
 	opt := copy.Options{
 		AddPermission: os.FileMode(0777),
 	}
-
+	log.Printf("---------------\n\n starting copy .... \n\n---------------\n")
 	for origin, target := range cpFolders {
 		go func(o, t string) {
 			err := copy.Copy(o, t, opt)
 			if err != nil {
 				log.Println(err)
 			}
+			log.Println(o, "complete!")
 			wg.Done()
 		}(origin, target)
 	}
 	wg.Wait()
-	log.Println("complete!!!!!!!")
+	log.Println("ALL COMPLETE!!!!!!!")
 	log.Println(time.Now().Sub(startTime))
 }
