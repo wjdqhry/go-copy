@@ -34,7 +34,7 @@ func main() {
 	wg := sync.WaitGroup{}
 	wg.Add(len(cpFolders))
 	opt := copy.Options{
-		AddPermission: os.FileMode(777),
+		AddPermission: os.FileMode(0777),
 	}
 
 	for origin, target := range cpFolders {
