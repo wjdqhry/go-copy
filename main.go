@@ -33,10 +33,13 @@ func main() {
 
 	wg := sync.WaitGroup{}
 	wg.Add(len(cpFolders))
+	opt := copy.Options{
+		AddPermission: os.FileMode(777),
+	}
 
 	for origin, target := range cpFolders {
 		go func(o, t string) {
-			err := copy.Copy(o, t)
+			err := copy.Copy(o, t, opt)
 			if err != nil {
 				log.Println(err)
 			}
